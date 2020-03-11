@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { fetchUsers, updateUser } from '../redux'
 import { Table } from 'react-bootstrap'
+import '../css/UserContainer.css'
 
 function UserContainer({ userData, fetchUsers  }) {
 
@@ -16,7 +17,7 @@ function UserContainer({ userData, fetchUsers  }) {
     ) : (
         <div>
         {
-            userData.users.map(user => <Table key={user.id}>
+            userData.users.map(user => <Table className="container" key={user.id}>
                 
                 <thead>
                     <tr>
