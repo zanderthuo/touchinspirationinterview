@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { fetchUsers } from '../redux'
+import { fetchUsers, updateUser } from '../redux'
+import { Table } from 'react-bootstrap'
 
 function UserContainer({ userData, fetchUsers  }) {
 
     useEffect(() => {
         fetchUsers()
+        updateUser()
     }, [])
     return userData.loading ? (
         <h2>Loading</h2>
@@ -13,13 +15,30 @@ function UserContainer({ userData, fetchUsers  }) {
         <h2>{userData.error}</h2>
     ) : (
         <div>
-            <h2>User List</h2>
-            <div>
-                {
-                    userData && userData.users && userData.users.map(user => <p>{user.name}</p>)
-                }
-            </div>
+        {
+            userData.users.map(user => <Table key={user.id}>
+                
+                <thead>
+                    <tr>
+                        <th>user</th>
+                        <th>bio</th>
+                        <th>email</th>
+                        <th>occupation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{user.name}</td>
+                        <td>{user.bio}</td>
+                        <td>{user.email}</td>
+                        <td>{user.occupation}</td>
+                    </tr>
+                </tbody>
+                </Table>)
+                
+        }           
         </div>
+
     )
 }
 
@@ -31,7 +50,8 @@ const mapaStateToProps = state => {
 
 const mapaDispatchToProps = dispatch => {
     return {
-        fetchUsers: () => dispatch(fetchUsers())
+        fetchUsers: () => dispatch(fetchUsers()),
+        updateUser: () => dispatch(updateUser())
     }
 }
 

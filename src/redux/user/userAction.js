@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE } from "./userType"
+import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, UPDATE_USERS } from "./userType"
 
 export const fetchUserRequest = () => {
     return {
@@ -21,6 +21,12 @@ const fetchUserFailure = error => {
     }
 }
 
+const updateUsersRequest = () => {
+    return {
+        type: UPDATE_USERS
+    }
+}
+
 export const fetchUsers = () =>{
     return (dispatch) => {
         dispatch(fetchUserRequest)
@@ -33,5 +39,20 @@ export const fetchUsers = () =>{
                 const errorMsg = error.message
                 dispatch(fetchUserFailure(errorMsg))
             })
+    }
+}
+
+export const updateUser = id => {
+    return (dispatch) => {
+        dispatch(updateUsersRequest)
+        axios.patch('https://ti-react-test.herokuapp.com/users/{id}', {
+            title: 'Updated Users',
+            completed: true
+        })
+        .then(response => {
+            return response;
+        })
+        .catch(err => err)
+        
     }
 }
