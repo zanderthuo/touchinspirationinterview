@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, UPDATE_USERS } from "./userType"
+import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, UPDATE_USERS, FETCH_USER } from "./userType"
 
 export const fetchUserRequest = () => {
     return {
@@ -27,6 +27,12 @@ const updateUsersRequest = () => {
     }
 }
 
+const fetchUserById = () => {
+    return {
+        type: FETCH_USER
+    }
+}
+
 export const fetchUsers = () =>{
     return (dispatch) => {
         dispatch(fetchUserRequest)
@@ -42,12 +48,29 @@ export const fetchUsers = () =>{
     }
 }
 
+export const fetchUser = () => {
+    return (dispatch) => {
+        axios.get('https://ti-react-test.herokuapp.com/users/:id')
+            .then(response => {
+                const user = response.data.id
+                dispatch(fetchUserById(user))
+            })
+            .catch(error => {
+                const errorMsg = error.message
+                dispatch(fetchUserFailure(errorMsg))
+            })
+    }
+}
+
 export const updateUser = id => {
     return (dispatch) => {
         dispatch(updateUsersRequest)
-        axios.patch('https://ti-react-test.herokuapp.com/users/{id}', {
-            title: 'Updated Users',
-            completed: true
+        axios.patch('https://ti-react-test.herokuapp.com/users,', {
+            bio: "MyText",
+            email: "MyString",
+            name:"MyString",
+            occupation: "MyString"
+
         })
         .then(response => {
             return response;

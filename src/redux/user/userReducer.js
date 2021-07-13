@@ -1,9 +1,10 @@
-import { FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE,FETCH_USERS_REQUEST,UPDATE_USERS
+import { FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE,FETCH_USERS_REQUEST,UPDATE_USERS, FETCH_USER
  } from "./userType"
 
 const initialState = {
     loading: false,
     users: [],
+    user: {},
     error: ''
 }
 
@@ -31,6 +32,11 @@ const UserReducer = (state = initialState, action) => {
                 ...state,
                 loading: true
             }    
+        case FETCH_USER:
+            return {
+                ...state,
+                user: action.payload
+            }     
         default: return state           
     }
 }
