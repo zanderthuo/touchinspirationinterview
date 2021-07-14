@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, UPDATE_USERS, FETCH_USER } from "./userType"
+import { FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_FAILURE, UPDATE_USER, FETCH_USER } from "./userType"
 
 export const fetchUserRequest = () => {
     return {
@@ -21,15 +21,17 @@ const fetchUserFailure = error => {
     }
 }
 
-const updateUsersRequest = () => {
+const fetchUserById = (user) => {
     return {
-        type: UPDATE_USERS
+        type: FETCH_USER,
+        payload: user
     }
 }
 
-const fetchUserById = () => {
+const userUpdateById = (user, id) => {
     return {
-        type: FETCH_USER
+        type: UPDATE_USER,
+        payload: user
     }
 }
 
@@ -48,34 +50,46 @@ export const fetchUsers = () =>{
     }
 }
 
-export const fetchUser = () => {
+export const fetchUser = (id) => {
     return (dispatch) => {
-        axios.get('https://ti-react-test.herokuapp.com/users/:id')
+        axios.get(`https://ti-react-test.herokuapp.com/users/${id}`)
             .then(response => {
-                const user = response.data.id
-                dispatch(fetchUserById(user))
+                console.log("response>>>", response)
+                dispatch(fetchUserById(response.data))
             })
             .catch(error => {
-                const errorMsg = error.message
-                dispatch(fetchUserFailure(errorMsg))
+                console.log(error)
             })
     }
 }
 
-export const updateUser = id => {
+export const updateUser = (user, id) => {
     return (dispatch) => {
-        dispatch(updateUsersRequest)
-        axios.patch('https://ti-react-test.herokuapp.com/users,', {
-            bio: "MyText",
-            email: "MyString",
-            name:"MyString",
-            occupation: "MyString"
-
-        })
-        .then(response => {
-            return response;
-        })
-        .catch(err => err)
-        
+        axios.patch(`https://ti-react-test.herokuapp.com/users/${id}`, user)
+            .then(response => {
+                console.log("response>>>", response)
+                dispatch(userUpdateById(response.data))
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
 }
+
+// export const updateUser = id => {
+//     return (dispatch) => {
+//         dispatch(updateUsersRequest)
+//         axios.patch('https://ti-react-test.herokuapp.com/users,', {
+//             bio: "MyText",
+//             email: "MyString",
+//             name:"MyString",
+//             occupation: "MyString"
+
+//         })
+//         .then(response => {
+//             return response;
+//         })
+//         .catch(err => err)
+        
+//     }
+// }
