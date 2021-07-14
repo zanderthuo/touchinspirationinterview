@@ -65,7 +65,7 @@ export const fetchUser = (id) => {
 
 export const updateUser = (user, id) => {
     return (dispatch) => {
-        axios.patch(`https://ti-react-test.herokuapp.com/users/${id}`, user)
+        axios.put(`https://ti-react-test.herokuapp.com/users/${id}`, user)
             .then(response => {
                 console.log("response>>>", response)
                 dispatch(userUpdateById(response.data))
